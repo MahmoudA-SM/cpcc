@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4" data-key="DashboardTitle">Dashboard</h1>
+
+    <!-- Key Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title" data-key="TotalCustomers">Total Customers</h5>
+                    <p class="card-text">
+                        <span data-key="TotalCustomersValueLabel">Count:</span>
+                        {{ total_customers }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title" data-key="TotalOrders">Total Orders</h5>
+                    <p class="card-text">
+                        <span data-key="TotalOrdersValueLabel">Count:</span>
+                        {{ total_orders }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title" data-key="TotalProducts">Total Products</h5>
+                    <p class="card-text">
+                        <span data-key="TotalProductsValueLabel">Count:</span>
+                        {{ total_products }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <h2 class="text-center mb-4" data-key="LowStockAlerts">Low Stock Products</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th data-key="ProductName">Product Name</th>
+                    <th data-key="Quantity">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in low_stock_products %}
+                <tr>
+                    <td data-key="ProductNameValue">{{ product.ProductName }}</td>
+                    <td data-key="QuantityValue">{{ product.batches[0].Quantity }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="2" class="text-center text-muted" data-key="NoLowStock">No low stock products.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+       <!-- Current Stock Assignments -->
+    <h3 class="mt-5">Current Stock Assignments</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Sales Rep</th>
+                    <th>Product</th>
+                    <th>Assigned Quantity</th>
+                    <th>Assigned Cost (SAR)</th>
+                    <th>Sales Revenue (SAR)</th>
+                    <th>Profit/Loss (SAR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detail in rep_stock_details %}
+                <tr>
+                    <td>{{ detail.rep }}</td>
+                    <td>{{ detail.product }}</td>
+                    <td>{{ detail.assigned_quantity }}</td>
+                    <td>{{ "%.2f" | format(detail.assigned_cost) }}</td>
+                    <td>{{ "%.2f" | format(detail.sales_revenue) }}</td>
+                    <td>{{ "%.2f" | format(detail.profit_or_loss) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No stock assignments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-4 text-center">
+        <a href="{{ url_for('assign_stock') }}" class="btn btn-primary w-100">Assign Stock to Sales Reps</a>
+    </div>    
+    <br>
+    <br>
+</div>
+{% endblock %}

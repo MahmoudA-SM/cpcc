@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}<span data-key="SearchResults">Search Results</span>{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4" data-key="SearchResults">Search Results</h1>
+    <p class="text-muted text-center">
+        <span data-key="ShowingResultsFor">Showing results for</span> <strong>{{ query }}</strong> <span data-key="In">in</span> <strong>{{ criteria }}</strong>:
+    </p>
+    
+    {% if results %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th data-key="CustomerID">Customer ID</th>
+                    <th data-key="StoreName">Store Name</th>
+                    <th data-key="StreetName">Street Name</th>
+                    <th data-key="District">District</th>
+                    <th data-key="ContactPerson">Contact Person</th>
+                    <th data-key="ContactPhone">Contact Phone</th>
+                    <th data-key="Notes">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in results %}
+                <tr>
+                    <td>{{ customer.CustomerID }}</td>
+                    <td>{{ customer.StoreName }}</td>
+                    <td>{{ customer.StreetName }}</td>
+                    <td>{{ customer.District }}</td>
+                    <td>{{ customer.ContactPerson }}</td>
+                    <td>{{ customer.ContactPhone }}</td>
+                    <td>{{ customer.Notes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center" data-key="NoResultsFound">
+        No results found for your search. Please try again with a different query.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
