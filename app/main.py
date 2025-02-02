@@ -20,7 +20,7 @@ app = Flask(__name__)
 secret_key = secrets.token_hex(16)  # Generates a secure random key
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default_fallback_key')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/momou/Desktop/Food Distribution/db/food_distribution.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/food_distribution.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database with the app
