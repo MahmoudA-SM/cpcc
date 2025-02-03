@@ -533,7 +533,8 @@ def login():
         if user and check_password_hash(user['Password'], password):
             session['user_id'] = user['UserID']
             session['role'] = user['Role']  # Store the role in the session
-            return redirect(url_for('customers'))  # Redirect to a protected page
+            session['username'] = user['Username']  # Fix: Ensure correct key is used
+            return redirect(url_for('index'))  # Redirect to a protected page
         else:
             return "Invalid username or password", 401
 
@@ -1387,5 +1388,5 @@ def delete_batch(batch_id):
         return f"An error occurred while trying to delete the batch: {str(e)}", 500
 
 if __name__ == '__main__':
-    # app.run(host="0.0.0.0", port=5000, debug=True)
-    app.run()
+    app.run(host="0.0.0.0", port=5000, debug=True)
+    # app.run()

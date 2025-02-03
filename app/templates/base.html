@@ -93,8 +93,6 @@
         .dropdown-menu {
             min-width: 160px;
         }
-
-        
     </style>
 </head>
 
@@ -111,8 +109,9 @@
                 <ul class="navbar-nav">
                     {% if session.role in ['admin', 'sales'] %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/admin_dashboard' or request.path == '/sales_rep_dashboard' %}active{% endif %}" 
-                        href="/dashboard" data-key="Dashboard">Dashboard</a>                    </li>
+                        <a class="nav-link {% if request.path == '/admin_dashboard' or request.path == '/sales_rep_dashboard' %}active{% endif %}"
+                            href="/dashboard" data-key="Dashboard">Dashboard</a>
+                    </li>
                     {% endif %}
 
                     {% if session.role in ['admin', 'manager', 'sales'] %}
@@ -135,11 +134,25 @@
                         <a class="nav-link" href="/inventory" data-key="Inventory">Inventory</a>
                     </li>
                     {% endif %}
-                    {% if session.role == 'admin' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register" data-key="Register">Register</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if session.get('username') and session.get('username') != 'None' %}
+                            {{ session.get('username') }} <!-- Display Username -->
+                            {% else %}
+                            Account
+                            {% endif %} </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!-- Show "Register" only for admins -->
+                            {% if session.role == 'admin' %}
+                            <li><a class="dropdown-item" href="/register" data-key="Register">Register</a></li>
+                            {% endif %}
+                            <!-- Show "Logout" for all logged-in users -->
+                            {% if session.get('user_id') %}
+                            <li><a class="dropdown-item" href="/logout" data-key="Logout">Logout</a></li>
+                            {% endif %}
+                        </ul>
                     </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -150,9 +163,6 @@
         <button class="btn btn-outline-primary" id="toggle-lang">
             {% if session.get('language', 'en') == 'ar' %}Eng{% else %}عربي{% endif %}
         </button>
-        {% if session.get('user_id') %}
-        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger" data-key="Logout">Logout</a>
-        {% endif %}
     </div>
 
     <!-- Flash Messages -->
@@ -175,7 +185,7 @@
     </div>
 
     <script>
-        
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/static/service-worker.js')
                 .then((registration) => {
@@ -189,13 +199,15 @@
 
     <script>
 
+
+
         // Highlight Active Page
         document.querySelectorAll('.nav-link').forEach(link => {
             if (link.href === window.location.href) {
                 link.classList.add('active');
             }
         });
-        
+
 
         const toggleLangButton = document.getElementById('toggle-lang');
         const body = document.body;
