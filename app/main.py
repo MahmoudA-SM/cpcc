@@ -2,7 +2,7 @@ from datetime import datetime, date
 from flask_login import current_user
 from numpy import extract
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask import Flask, abort, render_template, request, redirect, url_for, session, flash
+from flask import Flask, abort, render_template, request, redirect, url_for, session, flash, send_file
 from sqlalchemy import text
 from app.database import db, Customer, Order, Product, OrderDetail, Batch, SalesRep, User, Commission, RepStock, ToVisit
 from functools import wraps
@@ -1386,6 +1386,12 @@ def delete_batch(batch_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         return f"An error occurred while trying to delete the batch: {str(e)}", 500
+
+@app.route('/download-db')
+def download_db():
+    # Path to the database file
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../db/food_distribution.db')
+    return send_file(db_path, as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
