@@ -20,8 +20,8 @@ app = Flask(__name__)
 secret_key = secrets.token_hex(16)  # Generates a secure random key
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'default_fallback_key')
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Get the absolute path of the app folder
-DB_PATH = os.path.join(BASE_DIR, '../db/food_distribution.db')  # Go up one level to db folder
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get absolute path of current directory
+DB_PATH = os.path.join(BASE_DIR, '../db/food_distribution.db')  # Ensure it goes up one level
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
 
