@@ -77,6 +77,24 @@
             background-color: #f8f9fa;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        /* Highlight active link */
+        .navbar-nav .nav-item .nav-link.active {
+            font-weight: bold;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* Search bar */
+        .navbar-search {
+            width: 250px;
+        }
+
+        /* Register button in dropdown */
+        .dropdown-menu {
+            min-width: 160px;
+        }
+
+        
     </style>
 </head>
 
@@ -93,8 +111,8 @@
                 <ul class="navbar-nav">
                     {% if session.role in ['admin', 'sales'] %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard" data-key="Dashboard">Dashboard</a>
-                    </li>
+                        <a class="nav-link {% if request.path == '/admin_dashboard' or request.path == '/sales_rep_dashboard' %}active{% endif %}" 
+                        href="/dashboard" data-key="Dashboard">Dashboard</a>                    </li>
                     {% endif %}
 
                     {% if session.role in ['admin', 'manager', 'sales'] %}
@@ -157,6 +175,7 @@
     </div>
 
     <script>
+        
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/static/service-worker.js')
                 .then((registration) => {
@@ -169,6 +188,15 @@
     </script>
 
     <script>
+
+        // Highlight Active Page
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+        
+
         const toggleLangButton = document.getElementById('toggle-lang');
         const body = document.body;
 
@@ -243,7 +271,7 @@
                 "GetCurrentLocation": "Get Current Location",
                 "ViewLocation": "View Location",
                 "NoLocation": "No location",
-                "WelcomeMessage": "Welcome to the Dashboard",
+                "WelcomeMessage": "Construction Projects Contracting Company",
                 "TotalCustomers": "Total Customers",
                 "ManageCustomers": "Manage Customers",
                 "TotalOrders": "Total Orders",
