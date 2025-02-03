@@ -5,61 +5,112 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Welcome Message -->
-    <h1 class="text-center mb-4" data-key="WelcomeMessage">Welcome to the Dashboard</h1>
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" data-key="WelcomeMessage">Welcome to DistribuTrack – Your Food Distribution Hub!</h1>
+        <p class="lead" data-key="WelcomeSubtitle">Effortlessly Manage Customers, Orders, and Inventory!</p>
+    </div>
 
     <!-- Role-Specific Features -->
     {% if session['role'] == 'admin' %}
     <!-- Admin Section -->
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card card-custom text-center">
+    <div class="row g-4">
+        <!-- Customers Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card card-custom text-center p-4">
                 <div class="card-body">
-                    <h5 class="card-title" data-key="TotalCustomers">Total Customers</h5>
-                    <p class="card-text display-4">{{ total_customers or 0 }}</p>
-                    <a href="/customers" class="btn btn-primary" data-key="ViewCustomers">View Customers</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card card-custom text-center">
-                <div class="card-body">
-                    <h5 class="card-title" data-key="TotalOrders">Total Orders</h5>
-                    <p class="card-text display-4">{{ total_orders or 0 }}</p>
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="/add_order" class="btn btn-success" data-key="AddOrder">Add Order</a>
-                        <a href="/orders" class="btn btn-primary" data-key="ViewOrders">View Orders</a>
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                    <h2 class="card-title mb-3" data-key="TotalCustomers">Total Customers</h2>
+                    <p class="card-text display-3 fw-bold">{{ total_customers or 0 }}</p>
+                    <p class="card-text mb-4">Manage your customer base efficiently.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/customers" class="btn btn-primary btn-lg rounded-pill" data-key="ViewCustomers">
+                            <i class="fas fa-eye me-2"></i>View Customers
+                        </a>
+                        <a href="/add_customer" class="btn btn-success btn-lg rounded-pill" data-key="AddCustomer">
+                            <i class="fas fa-plus me-2"></i>Add Customer
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card card-custom text-center">
+
+        <!-- Orders Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card card-custom text-center p-4">
                 <div class="card-body">
-                    <h5 class="card-title" data-key="LowStockProducts">Low Stock Products</h5>
-                    <p class="card-text display-4">{{ low_stock_products|length or 0 }}</p>
-                    <a href="/inventory" class="btn btn-primary" data-key="ViewInventory">View Inventory</a>
+                    <i class="fas fa-shopping-cart fa-3x mb-3 text-primary"></i>
+                    <h2 class="card-title mb-3" data-key="TotalOrders">Total Orders</h2>
+                    <p class="card-text display-3 fw-bold">{{ total_orders or 0 }}</p>
+                    <p class="card-text mb-4">Track and manage all your orders in one place.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/orders" class="btn btn-primary btn-lg rounded-pill" data-key="ViewOrders">
+                            <i class="fas fa-eye me-2"></i>View Orders
+                        </a>
+                        <a href="/add_order" class="btn btn-success btn-lg rounded-pill" data-key="AddOrder">
+                            <i class="fas fa-plus me-2"></i>Add Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card card-custom text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-boxes fa-3x mb-3 text-primary"></i>
+                    <h2 class="card-title mb-3" data-key="LowStockProducts">Low Stock Products</h2>
+                    <p class="card-text display-3 fw-bold">{{ low_stock_products|length or 0 }}</p>
+                    <p class="card-text mb-4">Stay on top of your inventory levels.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/inventory" class="btn btn-primary btn-lg rounded-pill" data-key="ViewInventory">
+                            <i class="fas fa-eye me-2"></i>View Inventory
+                        </a>
+                        <a href="/add_stock" class="btn btn-success btn-lg rounded-pill" data-key="AddStock">
+                            <i class="fas fa-plus me-2"></i>Add Stock
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     {% elif session['role'] == 'sales' %}
     <!-- Sales Rep Section -->
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card card-custom text-center">
+    <div class="row g-4">
+        <!-- Assigned Stock Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card card-custom text-center p-4">
                 <div class="card-body">
-                    <h5 class="card-title" data-key="MyAssignedStock">My Assigned Stock</h5>
-                    <p class="card-text display-4">{{ assigned_stock or 0 }}</p>
-                    <a href="/view_assigned_stock" class="btn btn-primary" data-key="ViewStock">View Stock</a>
+                    <i class="fas fa-box fa-3x mb-3 text-primary"></i>
+                    <h2 class="card-title mb-3" data-key="MyAssignedStock">My Assigned Stock</h2>
+                    <p class="card-text display-3 fw-bold">{{ assigned_stock or 0 }}</p>
+                    <p class="card-text mb-4">Manage the stock assigned to you.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/view_assigned_stock" class="btn btn-primary btn-lg rounded-pill" data-key="ViewStock">
+                            <i class="fas fa-eye me-2"></i>View Stock
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="card card-custom text-center">
+
+        <!-- To-Visit List Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card card-custom text-center p-4">
                 <div class="card-body">
-                    <h5 class="card-title" data-key="ToVisitList">To-Visit List</h5>
-                    <p class="card-text display-4">{{ to_visit_list|length or 0 }}</p>
-                    <a href="/to_visit" class="btn btn-primary" data-key="ViewVisits">View Visits</a>
+                    <i class="fas fa-calendar-check fa-3x mb-3 text-primary"></i>
+                    <h2 class="card-title mb-3" data-key="ToVisitList">To-Visit List</h2>
+                    <p class="card-text display-3 fw-bold">{{ to_visit_list|length or 0 }}</p>
+                    <p class="card-text mb-4">Plan and track your customer visits.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="/to_visit" class="btn btn-primary btn-lg rounded-pill" data-key="ViewVisits">
+                            <i class="fas fa-eye me-2"></i>View Visits
+                        </a>
+                        <a href="/add_to_visit" class="btn btn-success btn-lg rounded-pill" data-key="AddVisit">
+                            <i class="fas fa-plus me-2"></i>Add Visit
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
