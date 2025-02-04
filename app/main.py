@@ -1291,11 +1291,23 @@ def remove_product(product_id):
         db.session.rollback()
         return f"An error occurred while trying to remove the product: {str(e)}", 500
 
+
 @app.route('/to_visit', methods=['GET'])
 @login_required
 def view_to_visit():
-    # Only fetch visits assigned to the logged-in sales rep
-    to_visit_list = ToVisit.query.filter_by(rep_id=current_user.id).join(Customer).order_by(ToVisit.visit_date).all()
+    # Determine the current user's role
+    user_role = session.get('role')
+
+    if user_role == 'admin':
+        # Admins can see all visits
+        to_visit_list = ToVisit.query.join(Customer).order_by(ToVisit.visit_date).all()
+    elif user_role == 'sales':
+        # Sales reps can only see their own visits
+        to_visit_list = ToVisit.query.filter_by(rep_id=current_user.id).join(Customer).order_by(
+            ToVisit.visit_date).all()
+    else:
+        return "Unauthorized: You do not have permission to access this page.", 403
+
     return render_template('to_visit.html', to_visit_list=to_visit_list)
 
 @app.route('/add_to_visit/<int:customer_id>', methods=['POST'])
