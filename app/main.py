@@ -1388,6 +1388,7 @@ def delete_batch(batch_id):
         return f"An error occurred while trying to delete the batch: {str(e)}", 500
 
 @app.route('/download-db')
+@role_required(['admin'])
 def download_db():
     # Path to the database file
     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../db/food_distribution.db')
